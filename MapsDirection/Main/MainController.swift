@@ -35,7 +35,33 @@ class MainController: UIViewController {
         mapView.mapType = .hybrid
         setupRegionForMap()
         
-        setupAnnotationsForMap()
+      //  setupAnnotationsForMap()
+        performLocalSearch()
+    }
+    
+    fileprivate func performLocalSearch()  {
+        let request = MKLocalSearch.Request()
+        request.naturalLanguageQuery = "кафе"
+        request.region = mapView.region
+        
+        let localSearch = MKLocalSearch(request: request)
+        localSearch.start { (resp, err) in
+            if let err = err {
+                print("Failed local search", err)
+                return
+            }
+            
+            //sucess
+            resp?.mapItems.forEach({ (mapItem) in
+                print(mapItem.placemark.subThoroughfare ?? "")
+                let annotation = MKPointAnnotation()
+                annotation.coordinate = mapItem.placemark.coordinate
+                annotation.title = mapItem.name
+                self.mapView.addAnnotation(annotation)
+            })
+            
+            self.mapView.showAnnotations(self.mapView.annotations, animated: true)
+        }
         
     }
     
