@@ -37,7 +37,22 @@ class MainController: UIViewController {
 //        setupAnnotationsForMap()
 //        performLocalSearch()
         setupSearchUI()
+        setupLocationsCarousel()
     }
+    
+    let locationsController = LocationCarouselController( scrollDirection: .horizontal)
+    
+    fileprivate func setupLocationsCarousel() {
+  
+        let locationsView = locationsController.view!
+        view.addSubview(locationsView)
+        locationsView.anchor(top: nil, leading: view.leadingAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, trailing: view.trailingAnchor, size: .init(width: 0, height: 150))
+    }
+    
+    
+    
+
+    
     
     let searchTextField = UITextField(placeholder: "Search query")
     
@@ -112,37 +127,15 @@ class MainController: UIViewController {
     }
     
     fileprivate func setupRegionForMap() {
-        let centerCoordinate = CLLocationCoordinate2D(latitude: 37.7666, longitude: -122.427290)
+        //let centerCoordinate = CLLocationCoordinate2D(latitude: 37.7666, longitude: -122.427290)
+        let centerCoordinate = CLLocationCoordinate2D(latitude: 55.751244, longitude: 37.618423)
         let span = MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1)
         let region = MKCoordinateRegion(center: centerCoordinate, span: span)
         mapView.setRegion(region, animated: true)
     }
 }
 
-extension MKMapItem {
-    func address() -> String {
-        var addressString = ""
-        if placemark.subThoroughfare != nil {
-            addressString = placemark.subThoroughfare! + " "
-        }
-        if placemark.thoroughfare != nil {
-            addressString += placemark.thoroughfare! + ", "
-        }
-        if placemark.postalCode != nil {
-            addressString += placemark.postalCode! + " "
-        }
-        if placemark.locality != nil {
-            addressString += placemark.locality! + ", "
-        }
-        if placemark.administrativeArea != nil {
-            addressString += placemark.administrativeArea! + " "
-        }
-        if placemark.country != nil {
-            addressString += placemark.country!
-        }
-        return addressString
-    }
-}
+
 
 // SwiftUI Preview
 import SwiftUI
