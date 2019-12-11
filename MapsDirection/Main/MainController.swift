@@ -16,7 +16,6 @@ extension MainController: MKMapViewDelegate {
         
         let annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "id")
         annotationView.canShowCallout = true
-//        annotationView.image = #imageLiteral(resourceName: "tourist")
         return annotationView
     }
     
@@ -51,17 +50,17 @@ class MainController: UIViewController {
         
         // listen for text changes and then perform new search
         // OLD SCHOOL
-        searchTextField.addTarget(self, action: #selector(handleSearchChanges), for: .editingChanged)
-        
+//        searchTextField.addTarget(self, action: #selector(handleSearchChanges), for: .editingChanged)
+//
         
         // NEW SCHOOL Search Throttling
         // search on the last keystroke of text changes and basically wait 500 milliseconds
-//        NotificationCenter.default
-//            .publisher(for: UITextField.textDidChangeNotification, object: searchTextField)
-//            .debounce(for: .milliseconds(500), scheduler: RunLoop.main)
-//            .sink { (_) in
-//                self.performLocalSearch()
-//        }
+        NotificationCenter.default
+            .publisher(for: UITextField.textDidChangeNotification, object: searchTextField)
+            .debounce(for: .milliseconds(500), scheduler: RunLoop.main)
+            .sink { (_) in
+                self.performLocalSearch()
+        }
     }
     
     @objc fileprivate func handleSearchChanges() {
