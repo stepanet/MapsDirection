@@ -54,29 +54,28 @@ class MainController: UIViewController {
 
     
     
-    let searchTextField = UITextField(placeholder: "QQ")
+    let searchTextField = UITextField(placeholder: "Search query")
     
     fileprivate func setupSearchUI() {
         let whiteContainer = UIView(backgroundColor: .white)
         view.addSubview(whiteContainer)
         whiteContainer.anchor(top: view.safeAreaLayoutGuide.topAnchor, leading: view.leadingAnchor, bottom: nil, trailing: view.trailingAnchor, padding: .init(top: 0, left: 16, bottom: 0, right: 16))
-            whiteContainer.layer.cornerRadius = 5
-            whiteContainer.backgroundColor = UIColor.gray
+        
         whiteContainer.stack(searchTextField).withMargins(.allSides(16))
         
         // listen for text changes and then perform new search
         // OLD SCHOOL
-        searchTextField.addTarget(self, action: #selector(handleSearchChanges), for: .editingChanged)
-
+//        searchTextField.addTarget(self, action: #selector(handleSearchChanges), for: .editingChanged)
+//
         
         // NEW SCHOOL Search Throttling
         // search on the last keystroke of text changes and basically wait 500 milliseconds
-//        NotificationCenter.default
-//            .publisher(for: UITextField.textDidChangeNotification, object: searchTextField)
-//            .debounce(for: .milliseconds(500), scheduler: RunLoop.main)
-//            .sink { (_) in
-//                self.performLocalSearch()
-//        }
+        NotificationCenter.default
+            .publisher(for: UITextField.textDidChangeNotification, object: searchTextField)
+            .debounce(for: .milliseconds(500), scheduler: RunLoop.main)
+            .sink { (_) in
+                self.performLocalSearch()
+        }
     }
     
     @objc fileprivate func handleSearchChanges() {
@@ -159,3 +158,4 @@ struct MainPreview: PreviewProvider {
         typealias UIViewControllerType = MainController
     }
 }
+
